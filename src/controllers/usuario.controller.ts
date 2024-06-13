@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 let conexionesPendientes: Response[] = [];
+let conecionesPendientes2: Response[] = [];
 
 const index = async (req: Request, res: Response) => {
     try {
@@ -39,7 +40,7 @@ const login = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
         res.header("Set-Cookie", token);
         res.status(200).send();
-        notificarClientes(); // Notificar a los clientes cuando un usuario inicia sesión
+        notificarConexiones(); // Notificar a los clientes cuando un usuario inicia sesión
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
@@ -55,7 +56,7 @@ const logout = async (req: Request, res: Response) => {
         await UsuarioService.logout(payload.id);
 
         res.clearCookie('token');
-        notificarClientes(); // Notificar a los clientes cuando un usuario cierra sesión
+        notificarConexiones(); // Notificar a los clientes cuando un usuario cierra sesión
         return res.status(200).json({ message: 'Usuario deslogeado correctamente' });
     } catch (error: any) {
         return res.status(500).json({ error: error.message });
@@ -79,4 +80,23 @@ const notificarClientes = async () => {
     });
 };
 
-export default { index, create, login, indexConected, logout, esperarNotificaciones };
+const esperarConexiones = (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    conecionesPendientes2.push(res);
+    req.on('close', () => {
+        conecionesPendientes2 = conecionesPendientes2.filter(client => client !== res);
+    });
+}
+
+const notificarConexiones = async () => {
+    const usuariosConectados = await UsuarioService.obtenerUsuariosConectados();
+    conecionesPendientes2.forEach(client => {
+        client.write(`data: ${JSON.stringify({ totalUsuariosConectados: usuariosConectados })}\n\n`);
+    });
+};
+
+
+
+export default { index, create, login, indexConected, logout, esperarNotificaciones, esperarConexiones };

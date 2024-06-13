@@ -10,5 +10,7 @@ router.post("/login", UsuarioController.login);
 router.get("/conected", verifyToken, UsuarioController.indexConected);
 router.post("/logout", verifyToken, UsuarioController.logout);
 router.get("/esperarNotificaciones", UsuarioController.esperarNotificaciones);
+router.get("/esperarConexiones", UsuarioController.esperarConexiones);
+
 
 export default router;

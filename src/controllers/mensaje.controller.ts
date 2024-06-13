@@ -4,8 +4,8 @@ import { Request, Response } from "express";
 
 const index = async (req: Request, res: Response) => {
     try{
-        const id = req.params.id;
-        const mensajes = await MensajeService.obtenerMensajes(id);
+
+        const mensajes = await MensajeService.obtenerMensajes();
         return res.status(200).json(mensajes);
     }
     catch(error: any){
