@@ -19,7 +19,7 @@ export default class UsuarioService {
         return Usuario.findOne({ email });
     }
 
-    public static async obtenerUsuarioPorId(id: string): Promise<UsuarioType | null> {
+    public static async obtenerUsuarioPorId(id: string): Promise<any> {
         return Usuario.findById(id);
     }
 

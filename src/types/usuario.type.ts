@@ -6,7 +6,7 @@ export interface UsuarioType
   email: string;
   password: string;
   conectado: boolean;
-  chats: ChatType[];
+  webHook: string;
 }
 export interface UsuarioInputType
 {

@@ -99,4 +99,5 @@ const notificarConexiones = async () => {
 
 
 
+
 export default { index, create, login, indexConected, logout, esperarNotificaciones, esperarConexiones };

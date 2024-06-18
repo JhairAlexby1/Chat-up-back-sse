@@ -20,10 +20,12 @@ app.use(cookieParser());
 import usuarioRouter from './routes/usuario.route';
 import chatRouter from './routes/chat.route';
 import mensajeRouter from './routes/mensaje.route';
+import webhookRouter from './routes/webhook.route';
 
 app.use('/usuarios', usuarioRouter);
 app.use('/chats', chatRouter);
 app.use('/mensajes', mensajeRouter);
+app.use('/webhooks', webhookRouter);
 
 app.listen(port, () => {
     console.log(`El servidor está escuchando en el puerto ${port}`);

@@ -5,7 +5,7 @@ const usuarioSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     conectado: { type: Boolean, default: false},
-    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
+    webHook: { type: mongoose.Types.ObjectId, required: false },
 });
 
 export default mongoose.model('Usuario', usuarioSchema);
